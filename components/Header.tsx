@@ -6,9 +6,9 @@ export default function Header() {
   const pathname = usePathname();
   return (
     <nav className="body grid-layout bg-slate-100 !sticky top-0 !z-[100] main-bg py-4 border-solid border-b border-black/10">
-      <a href="/" className="col-span-4 col-start-1 hover:text-lime-600">
+      <Link href="/" className="col-span-4 col-start-1 hover:text-lime-600">
         <h1>Xyrlan</h1>
-      </a>
+      </Link>
       <p className="col-span-6 md:col-start-7 lg:col-start-7 duration-500 md:col-span-3 lg:col-span-2 transition-opacity">
         Full Stack Developer
       </p>
