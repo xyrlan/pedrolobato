@@ -20,29 +20,39 @@ export default function SoulGlobal() {
     features: [
       {
         title: "Complex order management system",
-        description: "We've implemented an optimized 7-step sequential workflow system to manage the complete lifecycle of import orders, from contract signing to final delivery. This represents a significant transition from our previous 11-step model, specifically designed to reduce complexity and boost operational efficiency. The streamlined process ensures smoother transitions and improved oversight at every stage.",
-        description2: "For Step 2: Merchandise Payment, I developed an advanced logic that allows for multiple partial payments until 100% of the total merchandise value is reached. This provides complete payment flexibility for the client while maintaining robust administrative control and automated workflow progression. This innovative approach enhances customer convenience without compromising financial oversight",
+        description: "Developed an optimized 7-step sequential workflow system using React and PostgreSQL to manage the complete lifecycle of import orders, from contract signing to final delivery, reducing complexity from the previous 11-step model and boosting operational efficiency.",
+        description2: "Implemented advanced partial payment logic using API REST integrations allowing multiple payments until 100% completion, providing complete payment flexibility while maintaining robust administrative control and automated workflow progression.",
         images: [
           { url: "/soulglobal/orderfeature.mp4", description: "Customer order management" },
         ],
       },
       {
         title: "Complex International Freight Calculations and Integrated Financial Management",
-        description: "International Freight Calculation Engine: I implemented a robust system for dynamic international freight calculations, taking into account multiple variables and providing users with detailed cost simulations.",
-        description2: "Financial and Commission Management: I developed features for precise commission control and detailed NCM (Mercosul Common Nomenclature) management, which is crucial for pricing and compliance in import operations.",
+        description: "Implemented a dynamic international freight calculation engine using Next.js and TailwindCSS taking into account multiple variables, providing users with detailed cost simulations for precise import cost planning.",
+        description2: "Created precise commission control and NCM management features using PostgreSQL and API REST, ensuring compliance and accurate pricing in import operations.",
         images: [
           { url: "/soulglobal/cart.mp4", description: "International Freight Calculation Engine" },
         ],
       },
       {
         title: "Multi-Role Marketplace System",
-        description: "Complete Multi-Role Marketplace Architecture: I developed and implemented a robust marketplace architecture that supports three distinct roles: Admin, Seller, and Client. Each role features customized user experiences and permissions. This involved creating specific dashboards and interfaces for each user type, ensuring appropriate access and functionalities aligned with their role within the import ecosystem.",
-        description2: "Access and Authorization Management (Role-Based Access Control - RBAC): I implemented a Role-Based Access Control (RBAC) system using NextAuth.js. This ensures that functionalities and data are accessible only to users with the correct permissions. This includes user management, seller control, and order monitoring tailored to each specific role.",
+        description: "Developed a comprehensive marketplace architecture using React and Next.js supporting three distinct roles (Admin, Seller, Client) with customized dashboards and interfaces, ensuring appropriate access and functionalities for each user type within the import ecosystem.",
+        description2: "Implemented Role-Based Access Control (RBAC) system using NextAuth.js ensuring functionalities and data are accessible only to users with correct permissions, providing secure user management and role-specific monitoring.",
+        description3: "Enhanced with context-based Multi-Role Marketplace System leveraging React Context API to intelligently determine and fetch specific data based on the user's role, improving page loading times by an average of 30%.",
+      },
+      {
+        title: "Advanced Data Management and Performance Optimization",
+        description: "Implemented pagination with client-side caching and complex filtering capabilities using SWR and Next.js API Routes with queryCriteria to optimize response times and performance for large data requests across various tables by up to 40%.",
+        description2: "Created efficient data handling mechanisms for managing large datasets in import operations, ensuring smooth user experience even when dealing with extensive supplier catalogs, order histories, users, companies, and more.",
+        description3: "Enabled stateful table filters by integrating queryCriteria with URL parameters using Nuqs guaranteeing that filter selections are preserved when the page is reloaded, improving user workflow.",
+        images: [
+          { url: "/soulglobal/tablefilters.mp4", description: "Filtering and sorting" },
+        ],
       },
       {
         title: "Audit log",
-        description: "Implemented a comprehensive audit log system to track all actions taken by users within the platform. This includes user actions, order status changes, and system events. The audit log is stored in a PostgreSQL database and can be queried for auditing purposes.",
-        description2: "The audit log is stored in a PostgreSQL database and can be queried for auditing purposes.",
+        description: "Implemented a comprehensive audit log system using PostgreSQL to track all user actions, order status changes, and system events, providing complete transparency and compliance for auditing purposes.",
+        description2: "Created queryable audit database using PostgreSQL enabling detailed tracking and reporting for regulatory compliance and operational oversight.",
         images: [
           { url: "/soulglobal/auditlog.png", description: "Audit log" },
         ],

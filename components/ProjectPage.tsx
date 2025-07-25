@@ -19,6 +19,7 @@ interface ProjectPageProps {
       title: string;
       description: string;
       description2?: string;
+      description3?: string;
       images?: { url: string; description: string }[];
     }[];
     links?: {
@@ -102,12 +103,13 @@ export default function ProjectPage({ data }: ProjectPageProps) {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-3 w-3 ml-auto stroke-[3px] stroke-black/30 group-hover:stroke-black"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
           </Link>
         ))}
-        {data.features && data.features.map((feature: { title: string; description: string; description2?: string; images?: { url: string; description: string }[] }) => (
+        {data.features && data.features.map((feature: { title: string; description: string; description2?: string; description3?: string; images?: { url: string; description: string }[] }) => (
           <React.Fragment key={feature.title}>
             <div className="grid-gap col-start-1 col-end-13 mb-2 md:col-start-5 md:col-end-13 lg:col-end-12">
               <h2 className="mt-4 mb-2 h2">{"✶ " + feature.title}</h2>
               <p>{feature.description}</p>
               {feature.description2 && <p className="mt-2">{feature.description2}</p>}
+              {feature.description3 && <p className="mt-2">{feature.description3}</p>}
             </div>
             {feature.images && feature.images.map((image: { url: string; description: string }, index: number) => (
               <React.Fragment key={image.url}>
