@@ -33,12 +33,12 @@ export default function ProjectPage({ data }: ProjectPageProps) {
   return (
     <main className="min-h-[70vh]">
       <section className="w-full grid grid-cols-12 grid-gap relative z-10 max-w-[1800px]">
-        <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        viewport={{ once: true }}
-        className="select-none relative overflow-hidden my-2 md:my-8 h-[60vh] md:h-[49vh] object-cover w-full grid col-span-12 border border-black/10">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          viewport={{ once: true }}
+          className="select-none relative overflow-hidden my-2 md:my-8 h-[60vh] md:h-[49vh] object-cover w-full grid col-span-12 border border-black/10">
           {data.articleImage.includes(".mp4") ? (
             <div className="relative w-full h-full">
               <video src={data.articleImage} autoPlay muted loop className="w-full h-full object-cover" />
@@ -102,7 +102,7 @@ export default function ProjectPage({ data }: ProjectPageProps) {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-3 w-3 ml-auto stroke-[3px] stroke-black/30 group-hover:stroke-black"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
           </Link>
         ))}
-        {data.features && data.features.map((feature: any) => (
+        {data.features && data.features.map((feature: { title: string; description: string; description2?: string; images?: { url: string; description: string }[] }) => (
           <React.Fragment key={feature.title}>
             <div className="grid-gap col-start-1 col-end-13 mb-2 md:col-start-5 md:col-end-13 lg:col-end-12">
               <h2 className="mt-4 mb-2 h2">{"✶ " + feature.title}</h2>
