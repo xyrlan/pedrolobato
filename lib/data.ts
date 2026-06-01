@@ -80,7 +80,7 @@ export const gallery: Gallery[] = [
     id: "bingx",
     title: "BingX Robot",
     projectType: "Web App · Trading",
-    image: "/bingx/bingxbrand.png",
+    image: "/bingx/bingxcover.jpg",
     href: "/bingx"
   },
   {

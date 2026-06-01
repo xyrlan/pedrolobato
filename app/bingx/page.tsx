@@ -4,7 +4,7 @@ export default function BingxRobot() {
   const data = {
     title: "BingX Robot",
     description: "Autonomous trading platform for BingX perpetual futures — algorithmic bots coordinated by an AI portfolio manager.",
-    articleImage: "/bingx/bingxbrand.png",
+    articleImage: "/bingx/bingxcover.jpg",
     content: "A full-stack trading platform combining deterministic bots (grid, DCA, trailing stop, SMA crossover) with an AI Portfolio Manager built on Claude. Users connect encrypted BingX API keys and either run individual bots or hand portfolio-level discretion to a decision loop that proposes trades, clears them through risk guardrails, and executes — built to run continuously and survive failures.",
     role: ["Software Engineer", "Full Stack"],
     tools: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Drizzle ORM", "Inngest", "Vercel AI SDK", "Anthropic Claude"],
