@@ -36,22 +36,18 @@ export default function Gallery() {
     </Link>
   )
 
+  const columns: GalleryType[][] = [[], [], []]
+  gallery.forEach((item, i) => columns[i % 3].push(item))
+
   return (
     <div className="grid relative z-10 col-start-1 col-end-13 md:grid-cols-3 grid-gap">
-      <div className="flex flex-col gap-6">
-        {galleryItem(gallery[0])}
-        {galleryItem(gallery[3])}
-        {galleryItem(gallery[6])}
-      </div>
-      <div className="flex flex-col gap-6">
-        {galleryItem(gallery[2])}
-        {galleryItem(gallery[4])}
-        {galleryItem(gallery[7])}
-      </div>
-      <div className="flex flex-col gap-6">
-        {galleryItem(gallery[1])}
-        {galleryItem(gallery[5])}
-      </div>
+      {columns.map((col, ci) => (
+        <div key={ci} className="flex flex-col gap-6">
+          {col.map((item) => (
+            <div key={item.id}>{galleryItem(item)}</div>
+          ))}
+        </div>
+      ))}
     </div>
   );
-} 
+}

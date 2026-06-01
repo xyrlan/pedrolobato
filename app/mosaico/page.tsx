@@ -11,8 +11,8 @@ export default function Mosaico() {
     duration: "1 month",
     links: [
       {
-        name: "mosaico.com.br",
-        url: "https://mosaico.com.br",
+        name: "www.mosaico.med.br",
+        url: "https://www.mosaico.med.br",
         icon: "🌐"
       },
     ],

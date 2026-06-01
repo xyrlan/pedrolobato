@@ -11,8 +11,8 @@ export default function Nihon() {
     duration: "1 month",
     links: [
       {
-        name: "nihon.com.br",
-        url: "https://nihon.com.br",
+        name: "www.nihonrestaurante.com.br",
+        url: "https://www.nihonrestaurante.com.br",
         icon: "🌐"
       },
     ],
