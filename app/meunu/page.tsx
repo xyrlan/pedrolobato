@@ -3,60 +3,68 @@ import ProjectPage from "@/components/ProjectPage";
 export default function Meunu() {
   const data = {
     title: "Meunu",
-    description: "Meunu is a platform for managing and tracking orders, bills and products for a restaurant.",
+    description:
+      "A multi-tenant restaurant SaaS I built and still run alone — 364 stores signed up, 1,085 diners served, 2,531 orders processed.",
     articleImage: "/meunu/meunuvideo.mp4",
-    content: "Meunu is the all-in-one platform for you to create your online store in minutes. Easily list your products, share your store with your customers, and receive and organize orders in an incredibly easy and practical way.",
-    role: ["Software Engineer", "Full Stack", "UI/UX Designer"],
-    tools: ["React", "Next.js", "TailwindCSS", "API REST", "PostgreSQL"],
-    integrations: ["Google Location API", "Printer", "Stripe"],
-    duration: "2023 - 2024",
-    features: [
-      {
-        title: "RESTful API Development",
-        description: "Developed a RESTful API (API v1) using Next.js API Routes to enable modular and on-demand data loading, significantly reducing session payload and improving overall system performance.",
-        description2: "Created custom React hooks leveraging SWR and Next.js's component-based architecture to encapsulate data fetching and mutation logic for various modules (e.g., profile, delivery settings, tables), promoting code reusability and maintainability.",
-      },
-      {
-        title: "Advanced State Management and Caching",
-        description: "Implemented robust state management and caching using SWR (Stale-While-Revalidate) to ensure real-time data updates, automatic caching, improved user experience with optimistic updates, and efficient data synchronization across components and tabs.",
-        description2: "Implemented advanced SWR features such as optimistic updates, conditional revalidation, and persistent cache to further optimize data fetching, enhance UI responsiveness, and provide a seamless user experience even in varying network conditions.",
-      },
-      {
-        title: "Database Architecture and Authentication",
-        description: "Designed and integrated a flexible database schema using PostgreSQL with Prisma ORM to manage diverse restaurant data, including users, customers, products, orders, tables, and payment information.",
-        description2: "Implemented secure user authentication and authorization using NextAuth.js and middleware to protect API routes, verify user sessions, and enforce role-based access control, ensuring data integrity and user privacy.",
-      },
-      {
-        title: "Table Management System",
-        description: "Developed a comprehensive table management system utilizing QR code generation and dedicated API endpoints to streamline dine-in operations, including table status tracking, service fee management, and digital menu access.",
-        description2: "Created seamless integration between physical restaurant tables and digital ordering system, enabling customers to scan QR codes and access menus directly from their devices.",
-      },
-      {
-        title: "Payment Integration",
-        description: "Integrated multiple payment methods with Stripe for payment processing and PIX/cash options to provide flexible and secure transaction capabilities for various order types.",
-        description2: "Ensured comprehensive payment coverage for Brazilian market needs, supporting both international and local payment preferences with secure transaction processing.",
-      },
-      {
-        title: "Media Management and Promotions",
-        description: "Implemented image upload functionalities leveraging AWS S3 for storage and FormData with API routes to enable merchants to manage their avatar, logo, and cover images efficiently.",
-        description2: "Built a dynamic coupon and discount management system using dedicated API endpoints and associated hooks to allow businesses to create and manage promotional offers for customers.",
-      },
-      {
-        title: "Frontend User Experience",
-        description: "Enhanced frontend user experience with UI components from Radix UI and Headless UI, along with TailwindCSS for styling to create a modern, responsive, and accessible interface.",
-        description2: "Focused on delivering intuitive user interactions and seamless navigation across all platform features, ensuring optimal usability for restaurant owners and their customers.",
-      }
+    content:
+      "Meunu is a digital menu, order board, table system, cash register and inventory for Brazilian restaurants — merchant dashboard on one side, a public per-subdomain storefront on the other. 364 stores have signed up, 74 of them in the last 30 days, and 33 are running orders through it; 1,085 distinct diners have ordered, across 2,531 orders since April 2024 — roughly a fifth of them in the last month. Solo across three years and 971 commits: the product decisions, the schema, the money handling and the on-call are all mine. That constraint shaped the architecture more than any preference did.",
+    role: ["Founder", "Software Engineer", "Full Stack"],
+    tools: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL",
+      "SWR",
+      "TailwindCSS",
+      "Playwright",
     ],
+    integrations: ["Stripe", "Mercado Pago", "WhatsApp Cloud API", "Sentry", "Vercel"],
+    duration: "2023 - Present",
     links: [
       {
         name: "meunu.com.br",
         url: "https://meunu.com.br",
-        icon: "🌐"
+        icon: "🌐",
+      },
+    ],
+    features: [
+      {
+        title: "Five ways to place an order, one transaction boundary",
+        description:
+          "Storefront, table QR, manual POS, payment webhook and WhatsApp all converge on a single function. What belongs in the transaction is what must be true together; the printer, the notifications and the non-blocking stock path run after the commit, each isolated — because a failure there must never destroy an order that already exists.",
+        visual: "mn-system-map" as const,
+      },
+      {
+        title: "Whether to refuse a sale depends on the channel",
+        description:
+          "Out of stock is not one rule. On the storefront the customer is still choosing, so the decrement runs inside the transaction as UPDATE … WHERE stockQuantity >= qty — a compare-and-swap that makes negative stock unreachable without any lock. On a webhook the money is already captured, so the same code clamps to zero instead of failing, because refusing there would leave someone charged with no order.",
+        visual: "mn-stock" as const,
+      },
+      {
+        title: "Realtime without a websocket",
+        description:
+          "Supabase Realtime was removed on purpose. What replaced it is a polling protocol: one tab wins a Web Locks lease and becomes the only poller, the server short-circuits on MAX(updatedAt) before running any snapshot query, and the delta fans out to the other tabs over BroadcastChannel. Moving the interval from 3s to 5s cut about 40% of the platform's request volume for two seconds of latency.",
+        visual: "mn-realtime" as const,
+      },
+      {
+        title: "A subscription webhook that assumes it will be retried",
+        description:
+          "The effect and its idempotency marker are written in the same transaction, because applying one without recording the other is what turns a retry into a double grant. Out-of-order delivery is handled by a watermark in the WHERE clause rather than by trusting timestamps, and permanent failures are marked processed and answered 200 so Stripe stops retrying something that can never succeed.",
+        visual: "mn-stripe" as const,
+      },
+      {
+        title: "Diagnosing before fixing",
+        description:
+          "The cash register under-counted, and the write-up traced it to one cause: paying a table then finishing it nulls Payment.tableId, which is the only thing scoping that payment to a tenant — so the normal flow was precisely the one that broke. The same root cause explained two other symptoms, and the fix is a shiftId that makes a payment born inside a shift instead of being scraped into it by a time window.",
+      },
+      {
+        title: "A scalability plan that argued with itself",
+        description:
+          "The performance write-up ran a review against its own first draft and published the corrections: the endpoint assumed to be expensive was round-trip bound rather than scan bound, and the obvious composite index was dropped once the predicate turned out to be a negation a b-tree cannot use. Cache targets were walked back after noticing hit rate falls as a store gets busier — tag invalidation means caching helps the idle store most.",
       },
     ],
   };
 
-  return (
-    <ProjectPage data={data} />
-  );
+  return <ProjectPage data={data} />;
 }

@@ -6,9 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cv:pdf": "bun run scripts/generate-cv-pdf.tsx"
   },
   "dependencies": {
+    "@xyflow/react": "^12.11.2",
     "motion": "^12.23.9",
     "next": "15.5.18",
     "react": "19.1.0",
@@ -16,6 +18,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@react-pdf/renderer": "^4.5.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --background: #0b0b0c;
+  --foreground: #ededed;
+  /* one step up from the page, for panels that need to read as elevated */
+  --surface: #141416;
+  --accent: #34d399;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-ink: var(--foreground);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-offbit: var(--font-offbit);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -25,6 +25,70 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
+}
+
+::selection {
+  background: rgba(52, 211, 153, 0.25);
+  color: var(--foreground);
+}
+
+/* The /cv page is the source of the downloadable PDF — print it as it looks
+   on screen, on one continuous flow, without the site chrome. */
+@media print {
+  @page {
+    margin: 14mm 12mm;
+  }
+
+  html,
+  body {
+    background: var(--background) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  header,
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  .md\:sticky,
+  [class*="sticky"] {
+    position: static !important;
+  }
+
+  /* On screen the CV is a 12-column grid with a sticky identity column. On
+     paper that column reserves columns 1-4 of every page, leaving an empty
+     gutter from page 2 on — so print reflows it to one full-width column.
+     The downloadable PDF is generated separately by `npm run cv:pdf`. */
+  .cv-grid > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  h2,
+  li,
+  ul {
+    break-inside: avoid;
+  }
+}
+
+/* React Flow ships light-themed chrome — retint it */
+.react-flow__controls-button {
+  background: var(--surface);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  fill: rgba(237, 237, 237, 0.7);
+}
+
+.react-flow__controls-button:hover {
+  background: #202024;
+}
+
+.react-flow__attribution {
+  background: transparent;
+}
+
+.react-flow__attribution a {
+  color: rgba(237, 237, 237, 0.25);
 }
 
 

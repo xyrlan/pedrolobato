@@ -58,7 +58,7 @@ export const gallery: Gallery[] = [
   {
     id: "clubinho",
     title: "Clubinho — Corações Preciosos",
-    projectType: "Mobile App",
+    projectType: "Mobile App · Loyalty Platform",
     image: "/clubinho/clubinhocover.png",
     href: "/clubinho"
   },
