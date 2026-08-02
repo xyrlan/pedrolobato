@@ -8,7 +8,7 @@ export default function Gallery() {
 
   const galleryItem = (data: GalleryType) => (
     <Link href={data.isDisabled ? "#" : data.href} className={`cursor-pointer relative w-full opacity-100 inline-block select-none group ${data.isDisabled ? "pointer-events-none" : ""}`}>
-      <div className={`relative game-border border-black/20 border-solid   ${data.isDisabled ? "" : "group-hover:opacity-80"}`}>
+      <div className={`relative game-border border-ink/30 border-solid   ${data.isDisabled ? "" : "group-hover:opacity-80"}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -16,8 +16,8 @@ export default function Gallery() {
           viewport={{ once: true }}
           className="undefined relative w-full overflow-hidden">
           {data.isDisabled && (
-            <div className="absolute top-5 right-5 flex justify-center items-center p-2 bg-black rounded-xl">
-              <p className="text-white">Coming Soon</p>
+            <div className="absolute top-5 right-5 flex justify-center items-center p-2 bg-background/85 backdrop-blur-sm rounded-xl">
+              <p className="text-foreground">Coming Soon</p>
             </div>
           )}
           {data.image.includes(".mp4") ? (
@@ -30,8 +30,8 @@ export default function Gallery() {
         </motion.div>
       </div>
       <div className="mt-3">
-        <h1 className="caption text-zinc-950">{data.title}</h1>
-        <p className="caption text-zinc-500">{data.projectType}</p>
+        <h1 className="caption text-ink">{data.title}</h1>
+        <p className="caption text-ink/62">{data.projectType}</p>
       </div>
     </Link>
   )

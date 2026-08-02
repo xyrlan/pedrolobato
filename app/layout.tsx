@@ -26,10 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-semibold selection:bg-none selection:text-lime-600 leading-tight`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-semibold leading-tight`}>
         <div className="w-full flex items-center flex-col z-[200]">
-          <div className="z-10 w-full h-full bg-slate-100 justify-center flex text-zinc-700">
-            <div className="flex flex-col px-3 pb-8 w-full border-b border-solid shadow-xl max-w-[1800px] z-[9] text-padding md:px-3 border-neutral-800">
+          <div className="z-10 w-full h-full bg-background justify-center flex text-ink/80">
+            <div className="flex flex-col px-3 pb-8 w-full border-b border-solid shadow-xl max-w-[1800px] z-[9] text-padding md:px-3 border-ink/12">
               <Header />
               {children}
             </div>
