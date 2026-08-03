@@ -7,6 +7,9 @@
   /* one step up from the page, for panels that need to read as elevated */
   --surface: #141416;
   --accent: #34d399;
+  /* lime-400 rather than the original lime-600, which went muddy on a dark
+     background — same hue, enough contrast to read as a deliberate effect */
+  --selection: #a3e635;
 }
 
 @theme inline {
@@ -27,9 +30,16 @@ body {
   font-size: 15px;
 }
 
+/* Selection recolors the text instead of drawing a highlight block —
+   transparent background, foreground swapped for the selection color. */
 ::selection {
-  background: rgba(52, 211, 153, 0.25);
-  color: var(--foreground);
+  background: transparent;
+  color: var(--selection);
+}
+
+::-moz-selection {
+  background: transparent;
+  color: var(--selection);
 }
 
 /* The /cv page is the source of the downloadable PDF — print it as it looks
