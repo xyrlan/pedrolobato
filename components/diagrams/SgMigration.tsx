@@ -43,8 +43,8 @@ function Track({
             <motion.span
               key={p}
               animate={{
-                borderColor: on ? "rgba(52,211,153,.5)" : "rgba(255,255,255,0.16)",
-                color: on ? "rgba(52,211,153,1)" : "rgba(255,255,255,0.36)",
+                borderColor: on ? "rgba(163,230,53,.5)" : "rgba(255,255,255,0.16)",
+                color: on ? "rgba(163,230,53,1)" : "rgba(255,255,255,0.36)",
                 backgroundColor: on ? "rgba(255,255,255,.06)" : "rgba(255,255,255,0)",
               }}
               transition={{ duration: 0.3 }}

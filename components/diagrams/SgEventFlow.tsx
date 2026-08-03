@@ -81,8 +81,8 @@ export default function SgEventFlow() {
                 <div key={s} className="flex items-center gap-2">
                   <motion.span
                     animate={{
-                      color: lit ? "rgba(52,211,153,1)" : "rgba(255,255,255,0.36)",
-                      borderColor: lit ? "rgba(52,211,153,.5)" : "rgba(255,255,255,0.16)",
+                      color: lit ? "rgba(163,230,53,1)" : "rgba(255,255,255,0.36)",
+                      borderColor: lit ? "rgba(163,230,53,.5)" : "rgba(255,255,255,0.16)",
                     }}
                     transition={{ duration: 0.3 }}
                     className={`${mono} border rounded px-2 py-1`}

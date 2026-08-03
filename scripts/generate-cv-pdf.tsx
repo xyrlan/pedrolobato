@@ -21,7 +21,7 @@ import { cv } from "../lib/cv";
 
 const INK = "#ededed";
 const BG = "#0b0b0c";
-const ACCENT = "#34d399";
+const ACCENT = "#a3e635";
 const dim = (o: number) => `rgba(237,237,237,${o})`;
 
 Font.registerHyphenationCallback((word) => [word]);

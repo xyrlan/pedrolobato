@@ -57,7 +57,7 @@ export default function SgTenancy() {
               onHoverStart={() => setHover(n)}
               onHoverEnd={() => setHover(null)}
               animate={{
-                borderColor: on ? "rgba(52,211,153,.5)" : "rgba(255,255,255,0.16)",
+                borderColor: on ? "rgba(163,230,53,.5)" : "rgba(255,255,255,0.16)",
                 backgroundColor: on ? "rgba(255,255,255,.06)" : "rgba(255,255,255,0)",
               }}
               transition={{ duration: 0.3 }}

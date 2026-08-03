@@ -6,10 +6,10 @@
   --foreground: #ededed;
   /* one step up from the page, for panels that need to read as elevated */
   --surface: #141416;
-  --accent: #34d399;
-  /* lime-400 rather than the original lime-600, which went muddy on a dark
-     background — same hue, enough contrast to read as a deliberate effect */
-  --selection: #a3e635;
+  /* lime-400 — one accent for the whole site. The original lime-600 went
+     muddy on a dark background; same hue, enough contrast to read. */
+  --accent: #a3e635;
+  --selection: var(--accent);
 }
 
 @theme inline {
