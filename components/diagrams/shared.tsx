@@ -72,7 +72,7 @@ export function Node({
       animate={{
         borderColor: active
           ? accent
-            ? "rgba(52,211,153,.55)"
+            ? "rgba(163,230,53,.55)"
             : "rgba(255,255,255,0.51)"
           : "rgba(255,255,255,0.16)",
         backgroundColor: active ? "rgba(255,255,255,.06)" : "rgba(255,255,255,0)",

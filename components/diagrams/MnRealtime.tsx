@@ -30,7 +30,7 @@ export default function MnRealtime() {
                   key={t}
                   animate={{
                     borderColor:
-                      lit && leader ? "rgba(52,211,153,.5)" : "rgba(255,255,255,.12)",
+                      lit && leader ? "rgba(163,230,53,.5)" : "rgba(255,255,255,.12)",
                     opacity: lit && !leader ? 0.55 : 1,
                   }}
                   transition={{ duration: 0.35 }}
