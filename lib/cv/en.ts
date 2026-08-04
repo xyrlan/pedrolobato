@@ -1,4 +1,6 @@
-export const cv = {
+import type { CV } from "./types";
+
+export const en: CV = {
   name: "Pedro Lobato",
   title: "Software Engineer · Full Stack",
   location: "Brasília, DF · Remote",
@@ -128,4 +130,17 @@ export const cv = {
       note: "One of the largest English schools in Brazil",
     },
   ],
+  ui: {
+    metaTitle: "Pedro Lobato — CV",
+    metaDescription:
+      "Curriculum vitae of Pedro Lobato, software engineer working on import logistics, durable workflows and product interfaces.",
+    downloadPdf: "Download PDF",
+    backToWork: "← Back to work",
+    skills: "Skills",
+    experience: "Experience",
+    projects: "Selected side projects",
+    education: "Education",
+    otherLocale: "Ver em português",
+    otherLocaleHref: "/cv/pt",
+  },
 };

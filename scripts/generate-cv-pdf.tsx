@@ -1,5 +1,5 @@
 /**
- * Renders lib/cv.ts to public/cv/pedro-lobato-cv.pdf.
+ * Renders every locale in lib/cv to its own PDF under public/cv/.
  *
  * Run with:  bun run cv:pdf
  *
@@ -17,7 +17,7 @@ import {
   renderToFile,
 } from "@react-pdf/renderer";
 import React from "react";
-import { cv } from "../lib/cv";
+import { cvByLocale, type CV } from "../lib/cv";
 
 const INK = "#ededed";
 const BG = "#0b0b0c";
@@ -114,10 +114,10 @@ function Bullet({ children }: { children: string }) {
   );
 }
 
-function CVDocument() {
+function CVDocument({ cv }: { cv: CV }) {
   return (
     <Document
-      title={`${cv.name} — CV`}
+      title={cv.ui.metaTitle}
       author={cv.name}
       subject="Curriculum Vitae"
     >
@@ -137,7 +137,7 @@ function CVDocument() {
           </View>
         </View>
 
-        <Section label="Skills">
+        <Section label={cv.ui.skills}>
           {cv.skills.map((k) => (
             <View key={k.label} style={s.skillRow} wrap={false}>
               <Text style={s.skillLabel}>{k.label}</Text>
@@ -146,7 +146,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Experience">
+        <Section label={cv.ui.experience}>
           {cv.experience.map((e) => (
             <View key={e.company} style={s.entry}>
               {/* The header block stays glued to its first lines; the bullets
@@ -169,7 +169,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Selected side projects">
+        <Section label={cv.ui.projects}>
           {cv.projects.map((p) => (
             <View key={p.name} style={s.projectRow} minPresenceAhead={40}>
               <Text style={s.projectName}>{p.name}</Text>
@@ -178,7 +178,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Education">
+        <Section label={cv.ui.education}>
           {cv.education.map((ed) => (
             <View key={ed.school} style={s.eduRow} wrap={false}>
               <View style={s.eduHead}>
@@ -197,6 +197,10 @@ function CVDocument() {
   );
 }
 
-const OUT = "public/cv/pedro-lobato-cv.pdf";
-await renderToFile(<CVDocument />, OUT);
-console.log(`wrote ${OUT}`);
+/* The output path is the one the page links to, so it comes from the CV itself
+   rather than being repeated here. */
+for (const cv of Object.values(cvByLocale)) {
+  const out = `public${cv.pdf}`;
+  await renderToFile(<CVDocument cv={cv} />, out);
+  console.log(`wrote ${out}`);
+}
