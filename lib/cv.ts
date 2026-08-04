@@ -35,12 +35,12 @@ export const cv = {
       summary:
         "Import and logistics SaaS automating Brazilian customs, landed-cost pricing and shipment tracking.",
       bullets: [
-        "Led a full rewrite from a client-fetching React monolith to Next.js Server Components, moving data loading to the server and replacing an SWR cache with explicit revalidation — which cut the initial JavaScript payload and removed a whole class of stale-UI bugs.",
-        "Replaced hand-rolled state machines and cron polling with 18 durable Inngest functions, serialised one-per-shipment through a concurrency key and made idempotent with guarded UPDATEs, so payment reconciliation and customs progression survive crashes, retries and third-party outages instead of stalling silently.",
-        "Built the import tax engine as a pure module with zero database imports — CIF → II → IPI → PIS/COFINS → Siscomex → AFRMM → ICMS gross-up — computed in Decimal.js with ROUND_HALF_UP at each stage, because a naive flat-rate ICMS was off by thousands of reais per invoice line.",
-        "Modelled multi-tenancy as route groups whose layouts resolve the access gate before any child renders, backed by an HMAC-signed organization cookie with constant-time comparison, isolating four personas — importer, Chinese sourcing partner, customs broker and platform staff — over 55 tables.",
-        "Migrated live production data as two versioned pipelines of idempotent phases with the old-to-new id map persisted in its own table, so a crash mid-migration resumed where it stopped instead of restarting; the legacy 11-step order model collapsed to 7 steps in the process.",
-        "Integrated Siscomex Portal Único (DUIMP, CATP, CADA, Carga), Asaas payments across two accounts, ZapSign e-signature and ShipsGo tracking — each inbound webhook verifying its signature and landing in a persisted event queue before any business logic runs.",
+        "Rebuilt the platform from scratch as version 2.0 and took it live with the business running on the old one: pages now arrive already rendered from the server instead of loading data from the browser, screens no longer show outdated information after an action, and the operations team went from a tool they worked around to one they work in.",
+        "Replaced manual customs spreadsheets with an import tax engine that computes the full Brazilian chain — II, IPI, PIS/COFINS, Siscomex, AFRMM and the ICMS gross-up — to the cent. The previous flat-rate estimate was off by thousands of reais per invoice line, which is the difference between quoting an import at a profit or at a loss.",
+        "Automated the order lifecycle — payment reconciliation, customs progression, document generation — as background work that retries itself and resumes where it stopped. A government API going down or a crash mid-process no longer leaves an order silently stuck waiting for someone to notice; it also guarantees a shipment is never processed twice.",
+        "Isolated four kinds of user in one product — importer, Chinese sourcing partner, customs broker and internal staff — so each one only ever reaches its own data, with access decided before a page renders rather than hidden in the interface.",
+        "Moved every customer and order out of the legacy system into the new data model with no downtime and no data loss, simplifying the order flow from 11 steps to 7 along the way. The migration could stop and resume at any point, so a failure cost minutes instead of a full restart.",
+        "Connected the platform to the systems importers depend on — the Brazilian federal customs portal (Siscomex), payments, e-signature and international shipment tracking — so status that used to be checked by hand across four sites updates itself in one place.",
       ],
     },
     {
@@ -51,11 +51,11 @@ export const cv = {
       summary:
         "Central de Inteligência, a geospatial intelligence platform over rural properties and mining processes, built in a two-engineer product team. Front-end only — and the architecture lives there.",
       bullets: [
-        "Own the map layer engine: 4.4k lines of framework-free TypeScript where layers are declared as data — click handlers included, as typed keys into a registry — and a factory resolves one of five rendering strategies behind a single interface, so adding a strategy is one subclass and one switch case rather than edits across the calling code.",
-        "Built the GeoJSON pipeline around failures that surface no error: Google's Data layer fires no events on a GeometryCollection, so each one is expanded into standalone features carrying the parent's id and properties — without it, clicks stop working silently.",
-        "Stopped stale geometry from ever painting by revalidating each response against the current filters after the await, not just aborting on change — because an aborted request still resolves — with the same guard mirrored on the error path so a stale 404 never surfaces over live data.",
-        "Isolated five interacting layer-selection rules into a pure function over a Set — single, special, drill-down, exclusive, default, in fixed precedence — keeping behaviour testable instead of scattered through components, including the inverted case where deactivating a parent activates its children.",
-        "Kept thousands of features interactive on the main thread: freezing GeoJSON before it reaches reactive state so the framework never proxies it deeply, culling clusters to the viewport and re-rendering only on map idle, and yielding to the browser between teardown steps when switching visualization modes.",
+        "Own the map engine the whole product is built on — 4.4k lines of TypeScript where a new map layer is added by describing it, not by writing rendering code. Analysts get new data on the map in hours instead of a release cycle.",
+        "Kept the map trustworthy under fast filtering: results that arrive after the user has already changed the filters are discarded instead of painted, so what's on screen always matches what was asked — a class of bug that shows no error and quietly misleads whoever is reading the map.",
+        "Fixed clicks that silently stopped working on certain properties: Google Maps emits no event for one geometry type, so the pipeline now splits those into individually selectable areas, keeping every property on the map inspectable.",
+        "Turned five interacting layer-selection rules — including the inverted case where turning a parent off turns its children on — into one predictable, testable decision instead of behaviour scattered across the interface.",
+        "Kept thousands of properties smooth and clickable in the browser: rendering only what's in view, redrawing only when the map settles, and keeping the interface responsive while heavy layers load or tear down.",
       ],
     },
     {
@@ -66,12 +66,9 @@ export const cv = {
       summary:
         "Children's book subscription club with 12,000+ active subscribers. I own the subscriber-facing product and the retention platform behind it; the billing and fulfillment engine was built by other engineers on the team.",
       bullets: [
-        "Own the React Native app end to end — 39 screens shipped through EAS to 12,000+ paying subscribers — alongside the backend modules behind it, integrating with a live billing system I could extend but never pause.",
-        "Re-architected onboarding after measuring that only 365 of 11,759 subscribers had ever logged in: replaced bulk pre-provisioned accounts, which converted at 8%, with just-in-time provisioning at first access.",
-        "Modelled the loyalty currency as a ledger of lots with their own lifecycle — pending, approved, reserved, debited, expired, voided — so expiring a reward or reversing a charge affects only the lot it came from, instead of reconciling one mutable balance after the fact.",
-        "Moved double-click protection on reward redemption into the schema as a partial unique index on (client_id, product_id) WHERE status = 'pending', making a duplicate a database constraint violation rather than a race the API layer has to win from every route and job.",
-        "Designed a community support module around its privacy constraints: request text never enters a push payload or a log line, automatic risk triage blocks publication and routes to emergency services, consent is versioned, and no AI-generated text is ever shown to a subscriber.",
-        "Built an offline audio player served over HMAC-SHA256 signed URLs with constant-time comparison and a 6-hour TTL — self-contained because native players cannot attach auth headers — validating expiry with Number.isInteger to close a string-coercion bypass.",
+        "Own the subscriber app end to end — 39 screens, shipped to 12,000+ paying subscribers — plus the backend behind it, built on top of a billing system that was processing real charges the entire time and could never be paused.",
+        "Found that only 365 of 11,759 subscribers had ever logged in — the club was billing people who never opened what they paid for. Rebuilt onboarding so an account is created the moment the subscriber first arrives, instead of being pre-created in bulk and waiting for a login that never came.",
+        "Built the loyalty program that turns the subscription into a reason to come back: points that earn, expire and can be reversed individually, so a refunded order or an expired reward corrects itself without an operator recalculating balances — and a subscriber can't redeem the same reward twice by tapping twice.",
       ],
     },
     {
@@ -81,13 +78,12 @@ export const cv = {
       mode: "Remote",
       period: "08/2023 - Present",
       summary:
-        "Multi-tenant restaurant SaaS, built and operated solo across 971 commits: 364 stores signed up — 74 in the last 30 days — serving 1,085 diners across 2,531 orders, roughly a fifth of them in the last month.",
+        "Multi-tenant restaurant SaaS, built and operated solo: 360+ stores signed up, 2,500+ orders and 1,000+ diners served.",
       bullets: [
-        "Converged five order channels — storefront, table QR, manual POS, payment webhook and WhatsApp — on a single creation path, drawing the transaction boundary around what must be true together and pushing printing, notifications and non-blocking stock past the commit in isolated handlers, so none of them can destroy an order that already exists.",
-        "Made stock enforcement a per-channel decision rather than one rule: customer channels decrement inside the transaction with UPDATE … WHERE stockQuantity >= qty, a compare-and-swap that makes negative stock unreachable without locking, while post-payment channels clamp instead of refusing — because rejecting a captured payment leaves a customer charged with no order.",
-        "Replaced a realtime subscription service with a polling protocol that elects a single tab through the Web Locks API, short-circuits on MAX(updatedAt) before touching the snapshot query, and fans the delta out over BroadcastChannel — then cut ~40% of platform request volume by trading two seconds of latency.",
-        "Wrote the subscription webhook to assume redelivery: effect and idempotency marker committed in one transaction, out-of-order events rejected by a watermark inside the WHERE clause rather than trusted timestamps, and permanently invalid events acknowledged so the provider stops retrying what can never succeed.",
-        "Traced a cash-register shortfall to a single root cause — finishing a table nulls the foreign key that scopes its payment to the tenant, so the normal pay-then-close flow was the one that broke — and re-modelled payments to be created inside a shift instead of matched to one by time window.",
+        "Gave each restaurant five ways to receive an order — online storefront, QR code at the table, counter POS, payment link and WhatsApp — all landing in the same kitchen queue. Adding a channel takes no new order logic, and a failure while printing a ticket or sending a notification can no longer lose an order the customer already placed. Restaurants sell where the customer already is instead of forcing everyone through one door.",
+        "Made overselling impossible where it matters and harmless where it doesn't: an item that runs out during checkout stops being sold instantly, but an order already paid for is always accepted — refusing it would leave a customer charged with no order.",
+        "Made subscription billing self-correcting: a payment confirmation arriving twice, late or out of order never charges a store twice, never downgrades an active plan by mistake, and never needs manual reconciliation — so revenue collection runs without me watching it.",
+        "Tracked down cash-register totals that didn't match the day's sales: closing a table detached its payment from the shift, so the most common way of paying was the one that broke. Rewrote how payments attach to a shift, and the registers have closed correctly since.",
       ],
     },
     {
