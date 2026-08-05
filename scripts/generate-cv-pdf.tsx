@@ -1,5 +1,5 @@
 /**
- * Renders lib/cv.ts to public/cv/pedro-lobato-cv.pdf.
+ * Renders every locale in lib/cv to its own PDF under public/cv/.
  *
  * Run with:  bun run cv:pdf
  *
@@ -16,8 +16,9 @@ import {
   View,
   renderToFile,
 } from "@react-pdf/renderer";
+import { readFileSync } from "node:fs";
 import React from "react";
-import { cv } from "../lib/cv";
+import { cvByLocale, type CV } from "../lib/cv";
 
 const INK = "#ededed";
 const BG = "#0b0b0c";
@@ -33,6 +34,17 @@ Font.registerHyphenationCallback((word) => [word]);
  */
 const pdfText = (t: string) => t.replace(/→/g, "->");
 
+/**
+ * Body density, tightened only as far as a locale needs to stay within
+ * MAX_PAGES. Portuguese runs longer than the same sentence in English, so a
+ * single hardcoded size would either overflow one locale or waste space in the
+ * other.
+ */
+const density = (scale: number) => ({
+  fontSize: 8.4 * scale,
+  lineHeight: 1.38 * scale,
+});
+
 const s = StyleSheet.create({
   page: {
     backgroundColor: BG,
@@ -41,8 +53,6 @@ const s = StyleSheet.create({
     paddingBottom: 36,
     paddingHorizontal: 40,
     fontFamily: "Helvetica",
-    fontSize: 8.4,
-    lineHeight: 1.38,
   },
   name: { fontSize: 22, fontFamily: "Helvetica-Bold", letterSpacing: -0.5, lineHeight: 1.15 },
   title: { fontSize: 9, color: dim(0.6), marginTop: 5 },
@@ -114,14 +124,14 @@ function Bullet({ children }: { children: string }) {
   );
 }
 
-function CVDocument() {
+function CVDocument({ cv, scale }: { cv: CV; scale: number }) {
   return (
     <Document
-      title={`${cv.name} — CV`}
+      title={cv.ui.metaTitle}
       author={cv.name}
       subject="Curriculum Vitae"
     >
-      <Page size="A4" style={s.page}>
+      <Page size="A4" style={[s.page, density(scale)]}>
         {/* header */}
         <View>
           <Text style={s.name}>{cv.name}</Text>
@@ -137,7 +147,7 @@ function CVDocument() {
           </View>
         </View>
 
-        <Section label="Skills">
+        <Section label={cv.ui.skills}>
           {cv.skills.map((k) => (
             <View key={k.label} style={s.skillRow} wrap={false}>
               <Text style={s.skillLabel}>{k.label}</Text>
@@ -146,7 +156,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Experience">
+        <Section label={cv.ui.experience}>
           {cv.experience.map((e) => (
             <View key={e.company} style={s.entry}>
               {/* The header block stays glued to its first lines; the bullets
@@ -169,7 +179,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Selected side projects">
+        <Section label={cv.ui.projects}>
           {cv.projects.map((p) => (
             <View key={p.name} style={s.projectRow} minPresenceAhead={40}>
               <Text style={s.projectName}>{p.name}</Text>
@@ -178,7 +188,7 @@ function CVDocument() {
           ))}
         </Section>
 
-        <Section label="Education">
+        <Section label={cv.ui.education}>
           {cv.education.map((ed) => (
             <View key={ed.school} style={s.eduRow} wrap={false}>
               <View style={s.eduHead}>
@@ -197,6 +207,31 @@ function CVDocument() {
   );
 }
 
-const OUT = "public/cv/pedro-lobato-cv.pdf";
-await renderToFile(<CVDocument />, OUT);
-console.log(`wrote ${OUT}`);
+const MAX_PAGES = 2;
+/* Each step is small enough to be invisible next to the previous one; the loop
+   stops at the first scale that fits, so nothing shrinks further than it must. */
+const SCALES = [1, 0.98, 0.96, 0.94, 0.92, 0.9];
+
+const pageCount = (path: string) =>
+  readFileSync(path, "latin1").match(/\/Type\s*\/Page[^s]/g)?.length ?? 0;
+
+/* The output path is the one the page links to, so it comes from the CV itself
+   rather than being repeated here. */
+for (const cv of Object.values(cvByLocale)) {
+  const out = `public${cv.pdf}`;
+  let pages = 0;
+  let used = SCALES[0];
+
+  for (const scale of SCALES) {
+    used = scale;
+    await renderToFile(<CVDocument cv={cv} scale={scale} />, out);
+    pages = pageCount(out);
+    if (pages <= MAX_PAGES) break;
+  }
+
+  const fitted = pages <= MAX_PAGES;
+  console.log(
+    `wrote ${out} — ${pages} pages at scale ${used}${fitted ? "" : ` (still over ${MAX_PAGES}; trim copy)`}`,
+  );
+  if (!fitted) process.exitCode = 1;
+}
