@@ -28,10 +28,10 @@ export const projects: Project[] = [
     description: "Front-end for TerraLogs' data intelligence platform. Interactive Google Maps with layered geospatial data over rural properties, heavy GeoJSON manipulation, and analytics dashboards in Vue 3 + Quasar."
   },
   {
-    id: "clearframe",
-    title: "Clearframe",
-    period: "2026",
-    description: "Windows desktop SaaS that restores window visibility for apps with restricted display affinity. Win32 client with Cloudflare Workers backend, ECDSA-signed licenses, and Stripe subscriptions."
+    id: "clubinho",
+    title: "Clubinho (Corações Preciosos)",
+    period: "2026 - Present",
+    description: "Subscriber app and retention platform for a children's book subscription club with 12,000+ subscribers. 39 React Native screens shipped through EAS, plus the loyalty ledger and community modules behind them."
   },
   {
     id: "meunu",
